@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:dio/dio.dart';
 
 /// OSS Client
 /// 如何限制文件覆盖
@@ -32,6 +33,8 @@ class OssClient {
       this.tokenGetter,
       this.callBack,
       this.callBackVar});
+  
+  Dio dio = Dio();
 
   bool _checkExpire(String expire) {
     if (expire == null) {
@@ -157,6 +160,16 @@ class OssClient {
     this.fileKey = fileKey;
     _signRequest();
     return await http.get(url, headers: headers);
+  }
+
+  download(String fileKey, String savePath) async {
+    await init();
+    this.method = 'GET';
+    this.fileKey = fileKey;
+    _signRequest();
+    return await dio.download(url, savePath, options: Options(
+      headers: headers
+    ));
   }
 
   //私有对象签名后url

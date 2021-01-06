@@ -14,8 +14,8 @@ dependencies:
   intl: 
   http: 
   xml2json: 
+  dio: 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
